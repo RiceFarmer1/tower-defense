@@ -5,28 +5,34 @@ import Keyboard from "client/controllers/controls/Keyboard";
 export class TowerController implements OnStart, OnInit {
 	private Keyboard: Keyboard<[Enum.KeyCode, Enum.UserInputType]>;
 
+	public prefab: Model | undefined;
+
+	private SMOOTHNESS = 0.6;
+
 	constructor() {
 		this.Keyboard = new Keyboard([Enum.UserInputType.MouseButton1]);
 	}
 
-	onStart() {}
-	onInit(): void | Promise<void> {
-		this.Keyboard.KeyDown.Connect(this.onKeyDown);
+	public onStart() {}
+	public onInit(): void | Promise<void> {
+		this.Keyboard.KeyDown.Connect((keyCode) => {
+			if (!this.prefab) return;
+
+			if (keyCode === Enum.UserInputType.MouseButton2) {
+			} else if (keyCode === Enum.KeyCode.R) {
+			}
+		});
 	}
 
-	private setUpCollisionForTower(tower: Model) {}
+	protected setRotation(rot: CFrame) {
+		this.getCFrame().Lerp((this.prefab as Model).GetPivot().mul(rot), this.SMOOTHNESS);
+	}
 
-	private onKeyDown(keyCode: CastsToEnum<EnumItem>): void {
-		switch (keyCode) {
-			case Enum.UserInputType.MouseButton1:
-				break;
-			case Enum.UserInputType.MouseButton2:
-				break;
-			case Enum.KeyCode.R:
-				break;
-			default:
-				throw `Unable to listen to invalid inputs: ${keyCode}`;
-				break;
-		}
+	protected setCFrame(cf: CFrame) {
+		this.getCFrame().Lerp(cf, this.SMOOTHNESS);
+	}
+
+	protected getCFrame(): CFrame {
+		return (this.prefab as Model).GetPivot();
 	}
 }
