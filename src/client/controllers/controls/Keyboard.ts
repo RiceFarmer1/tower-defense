@@ -12,7 +12,6 @@ interface KeyboardState<K> {
 	KeyDown: Signal<(keycode: K) => void>;
 
 	KeyboardKeyCodes: K[];
-	destroy: () => void;
 }
 
 export default class Keyboard<K extends CastsToEnum<EnumItem>[]> implements KeyboardState<InferEnumKeys<K>> {
@@ -67,9 +66,5 @@ export default class Keyboard<K extends CastsToEnum<EnumItem>[]> implements Keyb
 		const keyExists = this.KeyboardKeyCodes.some((v) => v === keyCode);
 		if (keyExists) return;
 		this.KeyboardKeyCodes.push(keyCode);
-	}
-
-	public destroy() {
-		this.janitor.destroy();
 	}
 }

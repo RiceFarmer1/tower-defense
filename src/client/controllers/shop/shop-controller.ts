@@ -1,9 +1,11 @@
-import { Service, OnStart, OnInit } from "@flamework/core";
-import { Computed, Observer, Value } from "@rbxts/fusion";
+import { Controller, OnInit, OnStart } from "@flamework/core";
+import { Value } from "@rbxts/fusion";
 
-@Service({})
+@Controller({})
 export class ShopController implements OnStart, OnInit {
 	onStart() {}
 
-	onInit() {}
+	onInit(): void | Promise<void> {
+		const canOpenShop = Value(false);
+	}
 }
